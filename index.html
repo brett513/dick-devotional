@@ -1,0 +1,29 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Daily Devotional</title>
+<style>
+body{margin:0;background:#fbf6ec;color:#2e2a24;font-family:Georgia,"Times New Roman",serif;font-size:22px;line-height:1.6}
+main{max-width:680px;margin:0 auto;padding:28px 22px 60px}
+.date{font-size:20px;color:#8a6d3b;text-align:center;letter-spacing:.03em}
+blockquote{margin:28px 0;padding:24px;background:#fff;border-left:6px solid #c9a35a;border-radius:10px;font-size:26px;box-shadow:0 1px 4px #0001}
+.ref{display:block;margin-top:14px;font-size:20px;color:#6b5530;font-style:italic}
+h2{font-size:22px;color:#8a6d3b;margin:30px 0 6px;text-transform:uppercase;letter-spacing:.08em}
+.prayer{font-style:italic}
+nav{display:flex;justify-content:space-between;margin-top:40px;gap:12px}
+nav a{flex:1;text-align:center;padding:14px;background:#efe3c8;border-radius:10px;color:#4a3a1e;text-decoration:none;font-size:20px}
+</style></head><body><main id="m"><p class="date">Loading…</p></main>
+<script>
+function ny(){return new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
+function shift(d,n){var t=new Date(d+'T12:00:00Z');t.setUTCDate(t.getUTCDate()+n);return t.toISOString().slice(0,10)}
+function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+var q=new URLSearchParams(location.search).get('d'),pm=location.pathname.match(/\/d\/(\d{4}-\d{2}-\d{2})/);
+var d=(pm&&pm[1])||(q&&/^\d{4}-\d{2}-\d{2}$/.test(q)?q:ny());
+fetch('/devotions.json').then(r=>r.json()).then(function(all){
+var m=document.getElementById('m'),e=all[d];
+var nice=new Date(d+'T12:00:00Z').toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric',timeZone:'UTC'});
+var nav='<nav>'+(all[shift(d,-1)]?'<a href="/d/'+shift(d,-1)+'">&larr; Previous</a>':'')+(all[shift(d,1)]?'<a href="/d/'+shift(d,1)+'">Next &rarr;</a>':'')+'</nav>';
+if(!e){var keys=Object.keys(all).sort(),k=keys.filter(x=>x<=d).pop()||keys[0];
+m.innerHTML='<p class="date">'+nice+'</p><p>There is no devotional for this day yet.</p><p><a href="/d/'+k+'">Read the devotional for '+k+'</a></p><blockquote>“The grass withers, the flower fades; but the word of our God stands forever.”<span class="ref">Isaiah 40:8 (WEB)</span></blockquote>';return}
+document.title='Devotional – '+nice;
+m.innerHTML='<p class="date">'+nice+'</p><blockquote>“'+esc(e.verse)+'”<span class="ref">'+esc(e.reference)+' ('+e.translation+')</span></blockquote><h2>Reflection</h2><p>'+esc(e.reflection)+'</p><h2>Prayer</h2><p class="prayer">'+esc(e.prayer)+'</p>'+nav;
+}).catch(()=>{document.getElementById('m').innerHTML='<p>Sorry, the devotional could not load. Please try again.</p>'});
+</script></body></html>
