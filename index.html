@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#2b2340"><title>Daily Bread</title>
+<meta name="theme-color" content="#2b2340"><title>Morning Verse</title>
 <style>
 :root{--ink:#2b2620;--muted:#7a6a55;--gold:#a8782c;--paper:#fbf7f0;--card:#fff;--fs:21px}
 *{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
@@ -33,7 +33,7 @@ footer{text-align:center;color:var(--muted);font-size:15px;margin-top:36px;font-
 </style></head><body>
 <header class="hero"><div class="sun"></div>
 <svg viewBox="0 0 400 160" preserveAspectRatio="none"><path d="M0 90 Q80 40 160 80 T320 70 T400 80 V160 H0Z" fill="#7a4e5c" opacity=".55"/><path d="M0 120 Q100 70 200 110 T400 100 V160 H0Z" fill="#4a3448" opacity=".75"/><path d="M0 140 Q120 120 240 140 T400 135 V160 H0Z" fill="#fbf7f0"/></svg>
-<div class="top"><span>Daily Bread</span><button id="sz" aria-label="Change text size">Aa</button></div>
+<div class="top"><span>Morning Verse</span><button id="sz" aria-label="Change text size">Aa</button></div>
 <div class="date" id="date"></div><h1 id="title">Loading…</h1></header>
 <main id="m"></main>
 <script>
@@ -49,7 +49,7 @@ fetch('/devotions.json',{cache:'no-cache'}).then(r=>r.json()).then(function(all)
 var m=document.getElementById('m'),e=all[d],T=document.getElementById('title');
 if(!e){var keys=Object.keys(all).sort(),k=keys.filter(x=>x<=d).pop()||keys[0];T.textContent='The Word Endures';
 m.innerHTML='<div class="verse"><p>The grass withers, the flower fades; but the word of our God stands forever.</p><div class="ref">Isaiah 40:8 · WEB</div></div><h2>Note</h2><p>There isn\'t a devotional for this day yet.</p><nav><a href="/d/'+k+'">Read '+k+'</a></nav>';return}
-T.textContent=e.title;document.title=e.title+' · Daily Bread';
+T.textContent=e.title;document.title=e.title+' · Morning Verse';
 var paras=e.reflection.split(/\n\s*\n/).map(p=>'<p>'+esc(p.trim())+'</p>').join('');
 var p=shift(d,-1),n=shift(d,1);
 m.innerHTML='<div class="verse"><p>'+esc(e.verse)+'</p><div class="ref">'+esc(e.reference)+' · '+e.translation+'</div></div>'+
